@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>ارحان | برنامه‌نویس حرفه‌ای</title>
+    <style>
+        /* ----- CSS Variables برای تم دارک (پیش‌فرض) و لایت ----- */
+        :root {
+            /* تم دارک (پیش‌فرض) */
+            --bg-body: #0a0a0f;
+            --bg-surface: #14141f;
+            --text-primary: #f1f5f9;
+            --text-secondary: #cbd5e1;
+            --border-color: #2d2d3a;
+            --card-shadow: rgba(0, 0, 0, 0.4);
+            --btn-bg: #3b82f6;
+            --btn-hover: #2563eb;
+            --gradient-start: #3b82f6;
+            --gradient-end: #8b5cf6;
+            --code-bg: #1e1e2a;
+            --footer-bg: #020617;
+        }
+
+        /* تم لایت */
+        [data-theme="light"] {
+            --bg-body: #f8fafc;
+            --bg-surface: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #334155;
+            --border-color: #e2e8f0;
+            --card-shadow: rgba(0, 0, 0, 0.05);
+            --btn-bg: #2563eb;
+            --btn-hover: #1d4ed8;
+            --gradient-start: #2563eb;
+            --gradient-end: #7c3aed;
+            --code-bg: #f1f5f9;
+            --footer-bg: #0f172a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        body {
+            font-family: system-ui, 'Segoe UI', 'Tahoma', 'Roboto', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-primary);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* header + navbar */
+        header {
+            background: var(--bg-surface);
+            box-shadow: 0 4px 20px var(--card-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: 0.2s;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--gradient-start);
+        }
+
+        /* دکمه تغییر تم (سویچ) */
+        .theme-switch {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 40px;
+            padding: 8px 16px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: 0.2s;
+        }
+        .theme-switch:hover {
+            background: var(--border-color);
+        }
+        .theme-icon {
+            font-size: 1.2rem;
+        }
+
+        /* buttons */
+        .btn {
+            display: inline-block;
+            background: var(--btn-bg);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid var(--btn-bg);
+            color: var(--btn-bg);
+        }
+        .btn-outline:hover {
+            background: var(--btn-bg);
+            color: white;
+        }
+        .btn:hover {
+            background: var(--btn-hover);
+            transform: translateY(-2px);
+        }
+
+        /* hero */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--text-primary), var(--gradient-start));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            margin-bottom: 16px;
+        }
+        .hero .highlight {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 680px;
+            margin: 0 auto 32px;
+        }
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* sections */
+        section {
+            padding: 70px 0;
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 48px;
+            position: relative;
+            width: 100%;
+        }
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 70px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            margin: 12px auto 0;
+            border-radius: 4px;
+        }
+
+        /* skills grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 24px;
+            text-align: center;
+        }
+        .skill-card {
+            background: var(--bg-surface);
+            padding: 20px 12px;
+            border-radius: 28px;
+            box-shadow: 0 8px 20px var(--card-shadow);
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 1px solid var(--border-color);
+            transition: 0.2s;
+        }
+        .skill-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--gradient-start);
+            box-shadow: 0 20px 25px -12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 32px;
+        }
+        .project-card {
+            background: var(--bg-surface);
+            border-radius: 28px;
+            overflow: hidden;
+            transition: 0.25s;
+            box-shadow: 0 8px 20px var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 36px -12px rgba(0, 0, 0, 0.3);
+        }
+        .project-img {
+            height: 180px;
+            background: linear-gradient(145deg, var(--code-bg), var(--border-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: var(--gradient-start);
+        }
+        .project-info {
+            padding: 24px;
+        }
+        .project-info h3 {
+            font-size: 1.4rem;
+            margin-bottom: 8px;
+        }
+        .project-info p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+        .project-link {
+            color: var(--gradient-start);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* contact form */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg-surface);
+            padding: 32px;
+            border-radius: 36px;
+            box-shadow: 0 12px 30px var(--card-shadow);
+            border: 1px solid var(--border-color);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid var(--border-color);
+            border-radius: 32px;
+            font-size: 1rem;
+            background: var(--bg-body);
+            color: var(--text-primary);
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--gradient-start);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 110px;
+        }
+        footer {
+            background: var(--footer-bg);
+            color: var(--text-secondary);
+            text-align: center;
+            padding: 28px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.4rem;
+            }
+            nav {
+                flex-direction: column;
+            }
+            .nav-links {
+                gap: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <div class="container">
+        <nav>
+            <div class="logo">ArhanDev</div>
+            <ul class="nav-links">
+                <li><a href="#home">خانه</a></li>
+                <li><a href="#skills">مهارت‌ها</a></li>
+                <li><a href="#projects">پروژه‌ها</a></li>
+                <li><a href="#contact">تماس</a></li>
+                <li>
+                    <button class="theme-switch" id="themeToggle" aria-label="تغییر تم">
+                        <span class="theme-icon">🌙</span>
+                        <span>دارک / لایت</span>
+                    </button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section id="home">
+        <div class="container hero">
+            <h1>سلام، من <span class="highlight">ارحان</span> هستم <br> برنامه‌نویس خلاق</h1>
+            <p>توسعه‌دهنده فرانت‌اند و بک‌اند با علاقه به ساخت تجربه‌های کاربری روان و مدرن. من کد می‌زنم تا ایده‌ها به واقعیت تبدیل بشن.</p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn">مشاهده پروژه‌ها</a>
+                <a href="#contact" class="btn btn-outline">تماس با من</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <div class="container">
+            <h2 class="section-title">مهارت‌های من</h2>
+            <div class="skills-grid">
+                <div class="skill-card">JavaScript (ES6+)</div>
+                <div class="skill-card">React.js</div>
+                <div class="skill-card">Next.js</div>
+                <div class="skill-card">Node.js</div>
+                <div class="skill-card">Python</div>
+                <div class="skill-card">HTML5 & CSS3</div>
+                <div class="skill-card">Tailwind CSS</div>
+                <div class="skill-card">Git & GitHub</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <div class="container">
+            <h2 class="section-title">پروژه‌های اخیر</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-img">📱</div>
+                    <div class="project-info">
+                        <h3>اپلیکیشن مدیریت وظایف</h3>
+                        <p>اپلیکیشن تمام‌سکویی با React و Firebase – امکان افزودن، ویرایش و دسته‌بندی تسک‌ها.</p>
+                        <a href="#" class="project-link">مشاهده پروژه →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">🛒</div>
+                    <div class="project-info">
+                        <h3>فروشگاه آنلاین لباس</h3>
+                        <p>قالب فروشگاهی مدرن با Next.js و استرایپ، قابلیت فیلتر پیشرفته و سبد خرید.</p>
+                        <a href="#" class="project-link">مشاهده پروژه →</a>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-img">📊</div>
+                    <div class="project-info">
+                        <h3>داشبورد تحلیلی</h3>
+                        <p>داشبورد تعاملی با نمودارهای زنده، ساخته شده با Chart.js و React.</p>
+                        <a href="#" class="project-link">مشاهده پروژه →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <div class="container">
+            <h2 class="section-title">ارتباط با من</h2>
+            <div class="contact-form">
+                <div class="form-group">
+                    <input type="text" placeholder="نام و نام خانوادگی" id="name">
+                </div>
+                <div class="form-group">
+                    <input type="email" placeholder="آدرس ایمیل" id="email">
+                </div>
+                <div class="form-group">
+                    <textarea placeholder="پیام شما ..." id="message"></textarea>
+                </div>
+                <div style="text-align: center;">
+                    <button class="btn" id="sendBtn">ارسال پیام</button>
+                </div>
+                <p style="font-size: 0.8rem; text-align: center; margin-top: 20px; color: var(--text-secondary);">ایمیل: arhan@example.com | تلفن: ۰۹۱۲ XXX XXXX</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <p>© ۲۰۲۶ طراحی شده توسط ارحان – برنامه‌نویس و عاشق کدنویسی</p>
+        <p style="margin-top: 8px; font-size: 0.85rem;">✨ تمامی حقوق محفوظ است ✨</p>
+    </div>
+</footer>
+
+<script>
+    // مدیریت تغییر تم دارک/لایت
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement; // <html>
+
+    // بررسی ذخیره شده در localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        htmlElement.setAttribute('data-theme', 'light');
+        updateToggleIcon('light');
+    } else {
+        // در غیر این صورت دارک (پیش‌فرض)
+        htmlElement.setAttribute('data-theme', 'dark');
+        updateToggleIcon('dark');
+    }
+
+    function updateToggleIcon(theme) {
+        const iconSpan = themeToggle.querySelector('.theme-icon');
+        if (theme === 'light') {
+            iconSpan.textContent = '☀️';
+        } else {
+            iconSpan.textContent = '🌙';
+        }
+    }
+
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-theme');
+        if (currentTheme === 'dark') {
+            htmlElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            updateToggleIcon('light');
+        } else {
+            htmlElement.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            updateToggleIcon('dark');
+        }
+    });
+
+    // اسکریپت فرم تماس (دمو)
+    const sendBtn = document.getElementById('sendBtn');
+    if(sendBtn) {
+        sendBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const msg = document.getElementById('message').value.trim();
+            if(name === "" || email === "" || msg === "") {
+                alert("لطفاً همه فیلدها را پر کنید.");
+            } else {
+                alert(`پیام شما با موفقیت ارسال شد!\nبا تشکر ${name}، در اسرع وقت پاسخگو خواهم بود.`);
+                document.getElementById('name').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('message').value = '';
+            }
+        });
+    }
+</script>
+</body>
+</html>
